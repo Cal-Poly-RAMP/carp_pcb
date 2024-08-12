@@ -17,7 +17,21 @@ You will need python 3.6 or later.
 
 To program Caravel, connect the evaluation board using a USB micro B connector.
 
+## WSL Stuff
+
+Install [SystemD](https://learn.microsoft.com/en-us/windows/wsl/systemd)
+Install [USBIPD](https://github.com/dorssel/usbipd-win) on Windows side
+Install [USBIP](https://hackmd.io/@aeefs2Y8TMms-cjTDX4cfw/r1fqAa_Da?utm_source=preview-mode&utm_medium=rec) on WSL Side
+
+To connect a USB, on the windows side do `usbipd list` to see available devices
+Note the bus id of target device, and run `usbipd attach -b <busid> --wsl -a`
+
+## Main Stuff
+
 ```bash
+sudo apt-get install libusb-1.0
+sudo apt install gcc-riscv64-unknown-elf
+
 pip3 install pyftdi
 
 cd firmware/blink
