@@ -3,6 +3,7 @@
 
 #include "print.h"
 
+
 void led_off()
 {
     reg_gpio_out = 1; // OFF
@@ -23,6 +24,19 @@ void led_blink()
     delay(800000);
     led_off();
     delay(800000);
+}
+
+void config_logic()
+{
+    reg_la0_iena = 0x00007FFF;    // [31:0]
+	reg_la1_iena = 0x00000000;    // [63:32]
+	reg_la2_iena = 0x00000000;    // [95:64]
+	reg_la3_iena = 0x00000000;    // [127:96]
+
+    reg_la0_oenb = 0x00007FFF;    // [31:0]
+	reg_la1_oenb = 0x00000000;    // [63:32]
+	reg_la2_oenb = 0x00000000;    // [95:64]
+	reg_la3_oenb = 0x00000000;    // [127:96]
 }
 
 void print_logic()
@@ -114,12 +128,12 @@ void configure_io()
     reg_mprj_io_5 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;     // UART Rx
     reg_mprj_io_6 = GPIO_MODE_MGMT_STD_OUTPUT;           // UART Tx
     reg_mprj_io_7 = GPIO_MODE_USER_STD_INPUT_PULLUP;
-    reg_mprj_io_8 = GPIO_MODE_MGMT_STD_OUTPUT;
-    reg_mprj_io_9 = GPIO_MODE_MGMT_STD_OUTPUT;
-    reg_mprj_io_10 = GPIO_MODE_MGMT_STD_OUTPUT;
-    reg_mprj_io_11 = GPIO_MODE_MGMT_STD_OUTPUT;
-    reg_mprj_io_12 = GPIO_MODE_MGMT_STD_OUTPUT;
-    reg_mprj_io_13 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_8 = GPIO_MODE_USER_STD_OUTPUT;
+    reg_mprj_io_9 = GPIO_MODE_USER_STD_OUTPUT;
+    reg_mprj_io_10 = GPIO_MODE_USER_STD_BIDIRECTIONAL;
+    reg_mprj_io_11 = GPIO_MODE_USER_STD_BIDIRECTIONAL;
+    reg_mprj_io_12 = GPIO_MODE_USER_STD_BIDIRECTIONAL;
+    reg_mprj_io_13 = GPIO_MODE_USER_STD_BIDIRECTIONAL;
     reg_mprj_io_14 = GPIO_MODE_MGMT_STD_OUTPUT;
     reg_mprj_io_15 = GPIO_MODE_MGMT_STD_OUTPUT;
     reg_mprj_io_16 = GPIO_MODE_MGMT_STD_OUTPUT;
@@ -180,27 +194,9 @@ void main()
 
     reg_uart_enable = 1;
 
-    // Configure All LA probes as inputs to the cpu
-    // reg_la0_oenb = 0xFFFF8000;    // [31:0]
-	// reg_la1_oenb = 0xFFFFFFFF;    // [63:32]
-	// reg_la2_oenb = 0xFFFFFFFF;    // [95:64]
-	// reg_la3_oenb = 0xFFFFFFFF;    // [127:96]
-    // reg_la0_iena = 0xFFFF8000;    // [31:0]
-	// reg_la1_iena = 0xFFFFFFFF;    // [63:32]
-	// reg_la2_iena = 0xFFFFFFFF;    // [95:64]
-	// reg_la3_iena = 0xFFFFFFFF;    // [127:96]
-    
-    reg_la0_iena = 0x00007FFF;    // [31:0]
-	reg_la1_iena = 0x00000000;    // [63:32]
-	reg_la2_iena = 0x00000000;    // [95:64]
-	reg_la3_iena = 0x00000000;    // [127:96]
+    config_logic();
 
-    reg_la0_oenb = 0x00007FFF;    // [31:0]
-	reg_la1_oenb = 0x00000000;    // [63:32]
-	reg_la2_oenb = 0x00000000;    // [95:64]
-	reg_la3_oenb = 0x00000000;    // [127:96]
-
-    // reg_la0_data = 0x000000A0;
+    reg_la0_data = 0x000000A0;
 
 	// write data to la output
     //	reg_la0_data = 0x00;
@@ -223,9 +219,6 @@ void main()
         
         reg_wb_enable = 1;
         *carp_mem = 0xAC;
-        carp_mem_data = *carp_mem;
-        carp_mem_data = *carp_mem;
-        carp_mem_data = *carp_mem;
         carp_mem_data = *carp_mem;
         reg_wb_enable = 0;
 
