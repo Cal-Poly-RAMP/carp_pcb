@@ -2,7 +2,7 @@
 #include <stub.h>
 
 #include "print.h"
-
+#include "carp_mem.h"
 
 void led_off()
 {
@@ -37,6 +37,56 @@ void config_logic()
 	reg_la1_oenb = 0x00000000;    // [63:32]
 	reg_la2_oenb = 0x00000000;    // [95:64]
 	reg_la3_oenb = 0x00000000;    // [127:96]
+}
+
+void flash_carp()
+{
+    print("Flash Carp Started\n");
+    volatile uint32_t * carp_wish = ( uint32_t *)0x30006000;
+
+    // Flash Carp Memory
+    reg_la0_data = 0x000000A0;
+    for (int i = 0; i < (sizeof(carp_mem) / sizeof(*carp_mem)); i++) {
+    // for (int i = 0; i < 10; i++) {
+        // print(".");
+
+        volatile uint32_t rd_data, data;
+        data = carp_mem[i];
+        reg_wb_enable = 1;
+        carp_wish[i] = data;
+        rd_data = carp_wish[i];
+        reg_wb_enable = 0;
+
+        if (rd_data == data) {
+            print("*");
+        } else if (rd_data == -1) {
+            print("-");
+        } else if (rd_data == 0xDEADBEEF) {
+            print("D");
+        }
+        print("Addr: 0x");
+        print_hex(carp_wish+i, 8);
+        print(", Read: ");
+        print_hex(rd_data, 8);
+        print("\n");
+    }
+    print("Flash Carp Ended\n");
+    reg_la0_data = 0x00000000;
+
+    // Set IO 6 to input
+    reg_mprj_io_6 = GPIO_MODE_USER_STD_INPUT_PULLUP;  
+    // Initiate the serial transfer to configure IO
+    reg_mprj_xfer = 1;
+    while (reg_mprj_xfer == 1);
+
+    // Reset Carp Core
+    reg_la0_data = 0x0000000A;
+    delay(5);
+    reg_la0_data = 0x00000000;
+    delay(5);
+    // Set IO 6 back to caravel's uart pin
+    configure_io();
+
 }
 
 void print_logic()
@@ -193,57 +243,65 @@ void main()
     configure_io();
 
     reg_uart_enable = 1;
-
     config_logic();
 
-    reg_la0_data = 0x000000A0;
-
-	// write data to la output
-    //	reg_la0_data = 0x00;
-    //	reg_la1_data = 0x00;
-    //	reg_la2_data = 0x00;
-    //	reg_la3_data = 0x00;
-
-    // read data from la input
-    //	data0 = reg_la0_data;
-    //	data1 = reg_la1_data;
-    //	data2 = reg_la2_data;
-    //	data3 = reg_la3_data;
-    print("Hello World - mgmt");
-    led_off();
-    volatile uint32_t * carp_mem = ( uint32_t *)0x30000000;
-	while (1) {
-        uint32_t carp_mem_data;
+    flash_carp();
+    while (1) {
         print_logic();
-        led_blink();
-        
-        reg_wb_enable = 1;
-        *carp_mem = 0xAC;
-        carp_mem_data = *carp_mem;
-        reg_wb_enable = 0;
 
-        print("Wishbone Read:\n");
-        print_hex(carp_mem_data, 8);
-        print("\n");
+        // reg_mprj_io_6 = GPIO_MODE_USER_STD_INPUT_PULLUP;  
+        // reg_mprj_xfer = 1;
+        // while (reg_mprj_xfer == 1);
 
-        // led_blink();
-        // print("Hello World - mgmt\n\r");
-        // print("abcdefg\n");
-        if ( carp_mem_data != 0xAC)
-        {
-            // print("Fail !!\n");
-            led_off();
-            delay(8000000);
-        } else {
-            // print("Pass !!\n");
-            // led_on();
+        // reg_la0_data = 0x0000600A;
+        // reg_la_sample = 1;
+        // reg_la_sample = 0;
+        // uint32_t temp = reg_la0_data_in;
+        // // reg_la0_data = 0x00000000;
 
-            led_on();
-            delay(8000000);
-        }
+        // reg_mprj_io_6 = GPIO_MODE_MGMT_STD_OUTPUT;  
+        // reg_mprj_xfer = 1;
+        // while (reg_mprj_xfer == 1);
 
-
+        // print_hex(temp, 8);
+        // print("\n");
     }
+
+    // print("Hello World - mgmt");
+    // led_off();
+    // volatile uint32_t * carp_wish = ( uint32_t *)0x30000000;
+	// while (1) {
+    //     uint32_t carp_wish_data;
+    //     print_logic();
+    //     led_blink();
+        
+    //     reg_wb_enable = 1;
+    //     *carp_wish = 0xAC;
+    //     carp_wish_data = *carp_wish;
+    //     reg_wb_enable = 0;
+
+    //     print("Wishbone Read:\n");
+    //     print_hex(carp_wish_data, 8);
+    //     print("\n");
+
+    //     // led_blink();
+    //     // print("Hello World - mgmt\n\r");
+    //     // print("abcdefg\n");
+    //     if ( carp_wish_data != 0xAC)
+    //     {
+    //         // print("Fail !!\n");
+    //         led_off();
+    //         delay(8000000);
+    //     } else {
+    //         // print("Pass !!\n");
+    //         // led_on();
+
+    //         led_on();
+    //         delay(8000000);
+    //     }
+
+
+    // }
 
 
 }
