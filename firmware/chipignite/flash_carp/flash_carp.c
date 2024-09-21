@@ -42,20 +42,22 @@ void config_logic()
 void flash_carp()
 {
     print("Flash Carp Started\n");
-    volatile uint32_t * carp_wish = ( uint32_t *)0x30006000;
+    volatile uint32_t * carp_wish = ( uint32_t *)0x30000000;
 
     // Flash Carp Memory
     reg_la0_data = 0x000000A0;
     for (int i = 0; i < (sizeof(carp_mem) / sizeof(*carp_mem)); i++) {
     // for (int i = 0; i < 10; i++) {
         // print(".");
+        print("Addr: 0x");
+        print_hex(carp_wish+i, 8);
 
         volatile uint32_t rd_data, data;
         data = carp_mem[i];
         reg_wb_enable = 1;
         carp_wish[i] = data;
         rd_data = carp_wish[i];
-        reg_wb_enable = 0;
+        // reg_wb_enable = 0;
 
         if (rd_data == data) {
             print("*");
@@ -64,10 +66,16 @@ void flash_carp()
         } else if (rd_data == 0xDEADBEEF) {
             print("D");
         }
-        print("Addr: 0x");
-        print_hex(carp_wish+i, 8);
+        print(", Wrote: ");
+        print_hex(data, 8);
         print(", Read: ");
         print_hex(rd_data, 8);
+       
+        volatile uint32_t * bus_errors = (uint32_t *)0xF0000008;
+        print(", Bus Errors: ");
+        print_hex(*bus_errors, 8);
+        print(", Wb Enable: ");
+        print_hex(reg_wb_enable, 8);
         print("\n");
     }
     print("Flash Carp Ended\n");
