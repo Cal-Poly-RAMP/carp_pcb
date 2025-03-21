@@ -35,6 +35,8 @@
 #endif
 
 #ifndef MEM_REGIONS
-#define MEM_REGIONS "VEXRISCV_DEBUG  0xf00f0000 0x100 \nSRAM      0x00000000 0x800 \nFLASH     0x10000000 0x1000000 \nMPRJ      0x30000000 0x10000000 \nHK        0x26000000 0x300000 \nCSR       0xf0000000 0x10000 "
+#define MEM_REGIONS                                                                                                    \
+  "VEXRISCV_DEBUG  0xf00f0000 0x100 \nSRAM      0x00000000 0x800 \nFLASH     0x10000000 0x1000000 \nMPRJ      "        \
+  "0x30000000 0x10000000 \nHK        0x26000000 0x300000 \nCSR       0xf0000000 0x10000 "
 #endif
 #endif

@@ -15,7 +15,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-//#include "../../defs.h"
+// #include "../../defs.h"
 #include <defs.h>
 
 // --------------------------------------------------------
@@ -23,27 +23,24 @@
 /*
  *	User Project IO Control by Bit-bang Method Test
  */
-volatile int x[100] = { 0 };
+volatile int x[100] = {0};
 
-void main()
-{
-    /* This program does nothing but apply output bits to all	*/
-    /* GPIOs.  Configuring the GPIOs is done by the verilog	*/
-    /* testbench through the housekeeping SPI.			*/
+void main() {
+  /* This program does nothing but apply output bits to all	*/
+  /* GPIOs.  Configuring the GPIOs is done by the verilog	*/
+  /* testbench through the housekeeping SPI.			*/
 
-    /* However, the internal config must match the controller	*/
-    /* config for the management SoC to apply output.		*/
+  /* However, the internal config must match the controller	*/
+  /* config for the management SoC to apply output.		*/
 
-    reg_mprj_io_31 = GPIO_MODE_MGMT_STD_OUTPUT;
-//    reg_mprj_io_37 = GPIO_MODE_MGMT_STD_OUTPUT;
-//    reg_mprj_datal = 0x00000000;
-    reg_mprj_datal = 0xffffffff;
-    reg_mprj_datah = 0x0000003f;
+  reg_mprj_io_31 = GPIO_MODE_MGMT_STD_OUTPUT;
+  //    reg_mprj_io_37 = GPIO_MODE_MGMT_STD_OUTPUT;
+  //    reg_mprj_datal = 0x00000000;
+  reg_mprj_datal = 0xffffffff;
+  reg_mprj_datah = 0x0000003f;
 
-    reg_mprj_xfer = 1;
-    while (reg_mprj_xfer == 1);
+  reg_mprj_xfer = 1;
+  while (reg_mprj_xfer == 1);
 
-    while(1) {};
-
+  while (1) {};
 }
-

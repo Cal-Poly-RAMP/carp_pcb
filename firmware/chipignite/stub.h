@@ -17,7 +17,7 @@
 
 void putchar(char c);
 
-void print(const char *p);
+void print(const char* p);
 
 void print_hex(uint32_t v, int digits);
 

@@ -32,64 +32,64 @@ extern uint32_t flashio_worker_begin;
 extern uint32_t flashio_worker_end;
 
 // Storage area (MGMT: 0x0100_0000, User: 0x0200_0000)
-#define reg_rw_block0  (*(volatile uint32_t*)0x01000000)
-#define reg_rw_block1  (*(volatile uint32_t*)0x01100000)
-#define reg_ro_block0  (*(volatile uint32_t*)0x02000000)
+#define reg_rw_block0 (*(volatile uint32_t*)0x01000000)
+#define reg_rw_block1 (*(volatile uint32_t*)0x01100000)
+#define reg_ro_block0 (*(volatile uint32_t*)0x02000000)
 
 // UART (0x2000_0000)
-//#define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
-#define reg_uart_data   (*(volatile uint32_t*) CSR_UART_RXTX_ADDR)
-#define reg_uart_txfull   (*(volatile uint32_t*) CSR_UART_TXFULL_ADDR)
-#define reg_uart_enable (*(volatile uint32_t*) CSR_UART_ENABLED_OUT_ADDR)
-#define reg_uart_irq_en    (*(volatile uint32_t*) CSR_UART_EV_ENABLE_ADDR)
+// #define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
+#define reg_uart_data (*(volatile uint32_t*)CSR_UART_RXTX_ADDR)
+#define reg_uart_txfull (*(volatile uint32_t*)CSR_UART_TXFULL_ADDR)
+#define reg_uart_enable (*(volatile uint32_t*)CSR_UART_ENABLED_OUT_ADDR)
+#define reg_uart_irq_en (*(volatile uint32_t*)CSR_UART_EV_ENABLE_ADDR)
 
 // DEBUG (0x2000_0000)
-//#define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
-#define reg_reset   (*(volatile uint32_t*) CSR_CTRL_RESET_ADDR)
-#define reg_debug_data   (*(volatile uint32_t*) CSR_DEBUG_RXTX_ADDR)
-#define reg_debug_txfull   (*(volatile uint32_t*) CSR_DEBUG_TXFULL_ADDR)
-#define reg_debug_irq_en   (*(volatile uint32_t*) CSR_USER_IRQ_3_EV_ENABLE_ADDR)
-//#define reg_debug_enable (*(volatile uint32_t*) CSR_UART_ENABLED_OUT_ADDR)
+// #define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
+#define reg_reset (*(volatile uint32_t*)CSR_CTRL_RESET_ADDR)
+#define reg_debug_data (*(volatile uint32_t*)CSR_DEBUG_RXTX_ADDR)
+#define reg_debug_txfull (*(volatile uint32_t*)CSR_DEBUG_TXFULL_ADDR)
+#define reg_debug_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_3_EV_ENABLE_ADDR)
+// #define reg_debug_enable (*(volatile uint32_t*) CSR_UART_ENABLED_OUT_ADDR)
 
 // GPIO (0x2100_0000)
-#define reg_gpio_mode1  (*(volatile uint32_t*) CSR_GPIO_MODE1_ADDR)
-#define reg_gpio_mode0  (*(volatile uint32_t*) CSR_GPIO_MODE0_ADDR)
-#define reg_gpio_ieb    (*(volatile uint32_t*) CSR_GPIO_IEN_ADDR)
-#define reg_gpio_ien    (*(volatile uint32_t*) CSR_GPIO_IEN_ADDR)
-#define reg_gpio_oeb    (*(volatile uint32_t*) CSR_GPIO_OE_ADDR)
-//#define reg_gpio_oe    (*(volatile uint32_t*) CSR_GPIO_OE_ADDR)
-#define reg_gpio_in     (*(volatile uint32_t*) CSR_GPIO_IN_ADDR)
-#define reg_gpio_out    (*(volatile uint32_t*) CSR_GPIO_OUT_ADDR)
-//#define reg_gpio_pu   (*(volatile uint32_t*)0x21000008)
-//#define reg_gpio_pd   (*(volatile uint32_t*)0x2100000c)
+#define reg_gpio_mode1 (*(volatile uint32_t*)CSR_GPIO_MODE1_ADDR)
+#define reg_gpio_mode0 (*(volatile uint32_t*)CSR_GPIO_MODE0_ADDR)
+#define reg_gpio_ieb (*(volatile uint32_t*)CSR_GPIO_IEN_ADDR)
+#define reg_gpio_ien (*(volatile uint32_t*)CSR_GPIO_IEN_ADDR)
+#define reg_gpio_oeb (*(volatile uint32_t*)CSR_GPIO_OE_ADDR)
+// #define reg_gpio_oe    (*(volatile uint32_t*) CSR_GPIO_OE_ADDR)
+#define reg_gpio_in (*(volatile uint32_t*)CSR_GPIO_IN_ADDR)
+#define reg_gpio_out (*(volatile uint32_t*)CSR_GPIO_OUT_ADDR)
+// #define reg_gpio_pu   (*(volatile uint32_t*)0x21000008)
+// #define reg_gpio_pd   (*(volatile uint32_t*)0x2100000c)
 
 // Logic Analyzer (0x2200_0000)
-#define reg_la3_data (*(volatile uint32_t*) CSR_LA_OUT_ADDR)
-#define reg_la2_data (*(volatile uint32_t*) (CSR_LA_OUT_ADDR + 4))
-#define reg_la1_data (*(volatile uint32_t*) (CSR_LA_OUT_ADDR + 8))
-#define reg_la0_data (*(volatile uint32_t*) (CSR_LA_OUT_ADDR + 12))
+#define reg_la3_data (*(volatile uint32_t*)CSR_LA_OUT_ADDR)
+#define reg_la2_data (*(volatile uint32_t*)(CSR_LA_OUT_ADDR + 4))
+#define reg_la1_data (*(volatile uint32_t*)(CSR_LA_OUT_ADDR + 8))
+#define reg_la0_data (*(volatile uint32_t*)(CSR_LA_OUT_ADDR + 12))
 
-#define reg_la3_data_in (*(volatile uint32_t*) CSR_LA_IN_ADDR)
-#define reg_la2_data_in (*(volatile uint32_t*) (CSR_LA_IN_ADDR + 4))
-#define reg_la1_data_in (*(volatile uint32_t*) (CSR_LA_IN_ADDR + 8))
-#define reg_la0_data_in (*(volatile uint32_t*) (CSR_LA_IN_ADDR + 12))
+#define reg_la3_data_in (*(volatile uint32_t*)CSR_LA_IN_ADDR)
+#define reg_la2_data_in (*(volatile uint32_t*)(CSR_LA_IN_ADDR + 4))
+#define reg_la1_data_in (*(volatile uint32_t*)(CSR_LA_IN_ADDR + 8))
+#define reg_la0_data_in (*(volatile uint32_t*)(CSR_LA_IN_ADDR + 12))
 
-#define reg_la3_oenb (*(volatile uint32_t*) CSR_LA_OE_ADDR)
-#define reg_la2_oenb (*(volatile uint32_t*) (CSR_LA_OE_ADDR + 4))
-#define reg_la1_oenb (*(volatile uint32_t*) (CSR_LA_OE_ADDR + 8))
-#define reg_la0_oenb (*(volatile uint32_t*) (CSR_LA_OE_ADDR + 12))
+#define reg_la3_oenb (*(volatile uint32_t*)CSR_LA_OE_ADDR)
+#define reg_la2_oenb (*(volatile uint32_t*)(CSR_LA_OE_ADDR + 4))
+#define reg_la1_oenb (*(volatile uint32_t*)(CSR_LA_OE_ADDR + 8))
+#define reg_la0_oenb (*(volatile uint32_t*)(CSR_LA_OE_ADDR + 12))
 
-#define reg_la3_iena (*(volatile uint32_t*) CSR_LA_IEN_ADDR)
-#define reg_la2_iena (*(volatile uint32_t*) (CSR_LA_IEN_ADDR + 4))
-#define reg_la1_iena (*(volatile uint32_t*) (CSR_LA_IEN_ADDR + 8))
-#define reg_la0_iena (*(volatile uint32_t*) (CSR_LA_IEN_ADDR + 12))
+#define reg_la3_iena (*(volatile uint32_t*)CSR_LA_IEN_ADDR)
+#define reg_la2_iena (*(volatile uint32_t*)(CSR_LA_IEN_ADDR + 4))
+#define reg_la1_iena (*(volatile uint32_t*)(CSR_LA_IEN_ADDR + 8))
+#define reg_la0_iena (*(volatile uint32_t*)(CSR_LA_IEN_ADDR + 12))
 
 #define reg_la_sample (*(volatile uint32_t*)0x25000030)
 
 // User Project Control (0x2300_0000)
 #define reg_mprj_xfer (*(volatile uint32_t*)0x26000000)
-#define reg_mprj_pwr  (*(volatile uint32_t*)0x26000004)
-#define reg_mprj_irq  (*(volatile uint32_t*)0x26100014)
+#define reg_mprj_pwr (*(volatile uint32_t*)0x26000004)
+#define reg_mprj_irq (*(volatile uint32_t*)0x26100014)
 #define reg_mprj_datal (*(volatile uint32_t*)0x2600000c)
 #define reg_mprj_datah (*(volatile uint32_t*)0x26000010)
 
@@ -140,68 +140,66 @@ extern uint32_t flashio_worker_end;
 #define reg_mprj_io_37 (*(volatile uint32_t*)0x260000b8)
 
 // Housekeeping
-#define reg_hkspi_status      (*(volatile uint32_t*)0x26100000)
-#define reg_hkspi_chip_id     (*(volatile uint32_t*)0x26100004)
-#define reg_hkspi_user_id     (*(volatile uint32_t*)0x26100008)
-#define reg_hkspi_pll_ena     (*(volatile uint32_t*)0x2610000c)
-#define reg_hkspi_pll_bypass  (*(volatile uint32_t*)0x26100010)
-#define reg_hkspi_irq         (*(volatile uint32_t*)0x26100014)
-#define reg_hkspi_reset       (*(volatile uint32_t*)0x26100018)
-#define reg_hkspi_trap        (*(volatile uint32_t*)0x26100028)
-#define reg_hkspi_pll_trim    (*(volatile uint32_t*)0x2610001c)
-#define reg_hkspi_pll_source  (*(volatile uint32_t*)0x26100020)
+#define reg_hkspi_status (*(volatile uint32_t*)0x26100000)
+#define reg_hkspi_chip_id (*(volatile uint32_t*)0x26100004)
+#define reg_hkspi_user_id (*(volatile uint32_t*)0x26100008)
+#define reg_hkspi_pll_ena (*(volatile uint32_t*)0x2610000c)
+#define reg_hkspi_pll_bypass (*(volatile uint32_t*)0x26100010)
+#define reg_hkspi_irq (*(volatile uint32_t*)0x26100014)
+#define reg_hkspi_reset (*(volatile uint32_t*)0x26100018)
+#define reg_hkspi_trap (*(volatile uint32_t*)0x26100028)
+#define reg_hkspi_pll_trim (*(volatile uint32_t*)0x2610001c)
+#define reg_hkspi_pll_source (*(volatile uint32_t*)0x26100020)
 #define reg_hkspi_pll_divider (*(volatile uint32_t*)0x26100024)
-#define reg_hkspi_disable     (*(volatile uint32_t*)0x26200010)
+#define reg_hkspi_disable (*(volatile uint32_t*)0x26200010)
 
 // User Project Slaves (0x3000_0000)
 #define reg_mprj_slave (*(volatile uint32_t*)0x30000000)
-#define reg_wb_enable	  (*(volatile uint32_t*)0xf0003800)
-
+#define reg_wb_enable (*(volatile uint32_t*)0xf0003800)
 
 // Debug reg DEBUG_ON
 #define reg_debug_1 (*(volatile uint32_t*)0x300FFFF8)
 #define reg_debug_2 (*(volatile uint32_t*)0x300FFFFC)
 
 // Flash Control SPI Configuration (2D00_0000)
-#define reg_spictrl (*(volatile uint32_t*)0x2d000000)         
+#define reg_spictrl (*(volatile uint32_t*)0x2d000000)
 
 // Bit fields for Flash SPI control
-#define FLASH_BITBANG_IO0	0x00000001
-#define FLASH_BITBANG_IO1	0x00000002
-#define FLASH_BITBANG_CLK	0x00000010
-#define FLASH_BITBANG_CSB	0x00000020
-#define FLASH_BITBANG_OEB0	0x00000100
-#define FLASH_BITBANG_OEB1	0x00000200
-#define FLASH_ENABLE		0x80000000
+#define FLASH_BITBANG_IO0 0x00000001
+#define FLASH_BITBANG_IO1 0x00000002
+#define FLASH_BITBANG_CLK 0x00000010
+#define FLASH_BITBANG_CSB 0x00000020
+#define FLASH_BITBANG_OEB0 0x00000100
+#define FLASH_BITBANG_OEB1 0x00000200
+#define FLASH_ENABLE 0x80000000
 
 // Counter-Timer 0 Configuration
-#define reg_timer0_config (*(volatile uint32_t*) CSR_TIMER0_EN_ADDR)
-#define reg_timer0_update  (*(volatile uint32_t*) CSR_TIMER0_UPDATE_VALUE_ADDR)
-#define reg_timer0_value  (*(volatile uint32_t*) CSR_TIMER0_VALUE_ADDR)
-#define reg_timer0_data   (*(volatile uint32_t*) CSR_TIMER0_LOAD_ADDR)
-#define reg_timer0_data_periodic  (*(volatile uint32_t*) CSR_TIMER0_RELOAD_ADDR)
-#define reg_timer0_irq_en   (*(volatile uint32_t*) CSR_TIMER0_EV_ENABLE_ADDR)
+#define reg_timer0_config (*(volatile uint32_t*)CSR_TIMER0_EN_ADDR)
+#define reg_timer0_update (*(volatile uint32_t*)CSR_TIMER0_UPDATE_VALUE_ADDR)
+#define reg_timer0_value (*(volatile uint32_t*)CSR_TIMER0_VALUE_ADDR)
+#define reg_timer0_data (*(volatile uint32_t*)CSR_TIMER0_LOAD_ADDR)
+#define reg_timer0_data_periodic (*(volatile uint32_t*)CSR_TIMER0_RELOAD_ADDR)
+#define reg_timer0_irq_en (*(volatile uint32_t*)CSR_TIMER0_EV_ENABLE_ADDR)
 
 // Bit fields for Counter-timer configuration
-#define TIMER_ENABLE		0x01
-#define TIMER_ONESHOT		0x02
-#define TIMER_UPCOUNT		0x04
-#define TIMER_CHAIN		0x08
-#define TIMER_IRQ_ENABLE	0x10
+#define TIMER_ENABLE 0x01
+#define TIMER_ONESHOT 0x02
+#define TIMER_UPCOUNT 0x04
+#define TIMER_CHAIN 0x08
+#define TIMER_IRQ_ENABLE 0x10
 
 // SPI Master Configuration
-#define reg_spimaster_control (*(volatile uint32_t*) CSR_SPI_MASTER_CONTROL_ADDR)
-#define reg_spimaster_status (*(volatile uint32_t*) CSR_SPI_MASTER_STATUS_ADDR)
-#define reg_spimaster_wdata   (*(volatile uint32_t*) CSR_SPI_MASTER_MOSI_ADDR)
-#define reg_spimaster_rdata   (*(volatile uint32_t*) CSR_SPI_MASTER_MISO_ADDR)
-#define reg_spimaster_cs   (*(volatile uint32_t*) CSR_SPI_MASTER_CS_ADDR)
-#define reg_spimaster_clk_divider   (*(volatile uint32_t*) CSR_SPI_MASTER_CLK_DIVIDER_ADDR)
-#define reg_spi_enable (*(volatile uint32_t*) CSR_SPI_ENABLED_OUT_ADDR)
-
+#define reg_spimaster_control (*(volatile uint32_t*)CSR_SPI_MASTER_CONTROL_ADDR)
+#define reg_spimaster_status (*(volatile uint32_t*)CSR_SPI_MASTER_STATUS_ADDR)
+#define reg_spimaster_wdata (*(volatile uint32_t*)CSR_SPI_MASTER_MOSI_ADDR)
+#define reg_spimaster_rdata (*(volatile uint32_t*)CSR_SPI_MASTER_MISO_ADDR)
+#define reg_spimaster_cs (*(volatile uint32_t*)CSR_SPI_MASTER_CS_ADDR)
+#define reg_spimaster_clk_divider (*(volatile uint32_t*)CSR_SPI_MASTER_CLK_DIVIDER_ADDR)
+#define reg_spi_enable (*(volatile uint32_t*)CSR_SPI_ENABLED_OUT_ADDR)
 
 // System Area (0x2F00_0000)
-#define reg_clk_out_dest  (*(volatile uint32_t*)0x26200004)
-#define reg_irq_source    (*(volatile uint32_t*)0x2620000C)
+#define reg_clk_out_dest (*(volatile uint32_t*)0x26200004)
+#define reg_irq_source (*(volatile uint32_t*)0x2620000C)
 
 // Bit fields for reg_power_good
 #define USER1_VCCD_POWER_GOOD 0x01
@@ -218,36 +216,36 @@ extern uint32_t flashio_worker_end;
 #define IRQ8_SOURCE 0x02
 
 // IRQ bit enable
-#define reg_user0_irq_en   (*(volatile uint32_t*) CSR_USER_IRQ_0_EV_ENABLE_ADDR)
-#define reg_user1_irq_en   (*(volatile uint32_t*) CSR_USER_IRQ_1_EV_ENABLE_ADDR)
-#define reg_user2_irq_en   (*(volatile uint32_t*) CSR_USER_IRQ_2_EV_ENABLE_ADDR)
-#define reg_user3_irq_en   (*(volatile uint32_t*) CSR_USER_IRQ_3_EV_ENABLE_ADDR)
-#define reg_user4_irq_en   (*(volatile uint32_t*) CSR_USER_IRQ_4_EV_ENABLE_ADDR) // mprj[7]
-#define reg_user5_irq_en   (*(volatile uint32_t*) CSR_USER_IRQ_5_EV_ENABLE_ADDR)
+#define reg_user0_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_0_EV_ENABLE_ADDR)
+#define reg_user1_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_1_EV_ENABLE_ADDR)
+#define reg_user2_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_2_EV_ENABLE_ADDR)
+#define reg_user3_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_3_EV_ENABLE_ADDR)
+#define reg_user4_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_4_EV_ENABLE_ADDR) // mprj[7]
+#define reg_user5_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_5_EV_ENABLE_ADDR)
 
 // Individual bit fields for the GPIO pad control
-#define MGMT_ENABLE	  0x001
-#define OE_OVERRIDE	  0x002
-#define INPUT_ENABLE	  0x004
-#define OUTPUT_ENABLE	  0x008
-#define SCHMITT_SELECT	  0x010
-#define SLEW_SELECT	  0x020
-#define PULLUP_SELECT	  0x040
-#define PULLDOWN_SELECT	  0x080
+#define MGMT_ENABLE 0x001
+#define OE_OVERRIDE 0x002
+#define INPUT_ENABLE 0x004
+#define OUTPUT_ENABLE 0x008
+#define SCHMITT_SELECT 0x010
+#define SLEW_SELECT 0x020
+#define PULLUP_SELECT 0x040
+#define PULLDOWN_SELECT 0x080
 #define DRIVE_SELECT_MASK 0x300
 
 // Useful GPIO mode values
-#define GPIO_MODE_MGMT_STD_INPUT_NOPULL    0x007
-#define GPIO_MODE_MGMT_STD_INPUT_PULLDOWN  0x047
-#define GPIO_MODE_MGMT_STD_INPUT_PULLUP	   0x087
-#define GPIO_MODE_MGMT_STD_OUTPUT	   0x00b
-#define GPIO_MODE_MGMT_STD_BIDIRECTIONAL   0x009
+#define GPIO_MODE_MGMT_STD_INPUT_NOPULL 0x007
+#define GPIO_MODE_MGMT_STD_INPUT_PULLDOWN 0x047
+#define GPIO_MODE_MGMT_STD_INPUT_PULLUP 0x087
+#define GPIO_MODE_MGMT_STD_OUTPUT 0x00b
+#define GPIO_MODE_MGMT_STD_BIDIRECTIONAL 0x009
 
-#define GPIO_MODE_USER_STD_INPUT_NOPULL	   0x006
-#define GPIO_MODE_USER_STD_INPUT_PULLDOWN  0x046
-#define GPIO_MODE_USER_STD_INPUT_PULLUP	   0x086
-#define GPIO_MODE_USER_STD_OUTPUT	   0x00a
-#define GPIO_MODE_USER_STD_BIDIRECTIONAL   0x00C
+#define GPIO_MODE_USER_STD_INPUT_NOPULL 0x006
+#define GPIO_MODE_USER_STD_INPUT_PULLDOWN 0x046
+#define GPIO_MODE_USER_STD_INPUT_PULLUP 0x086
+#define GPIO_MODE_USER_STD_OUTPUT 0x00a
+#define GPIO_MODE_USER_STD_BIDIRECTIONAL 0x00C
 
 // --------------------------------------------------------
 #endif
