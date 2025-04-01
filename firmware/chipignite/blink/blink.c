@@ -1,5 +1,6 @@
 #include <defs.h>
 #include <stub.h>
+#include <uart.h>
 
 // --------------------------------------------------------
 // Firmware routines
