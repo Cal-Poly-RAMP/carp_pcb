@@ -1,6 +1,8 @@
 #include <defs.h>
 #include <stub.h>
 #include <uart.h>
+#include <string.h>
+#include <stdlib.h>
 
 // --------------------------------------------------------
 // Firmware routines
@@ -91,6 +93,13 @@ void delay(const int d) {
   reg_timer0_update = 1; // latch current value
   while (reg_timer0_value > 0) { reg_timer0_update = 1; }
 }
+
+void send_byte(uint8_t c) {
+  reg_mprj_datah = c;
+  reg_mprj_datal = c;
+}
+
+uint8_t read_byte(void) { return reg_mprj_datah; }
 
 void main() {
   int i, j, k;

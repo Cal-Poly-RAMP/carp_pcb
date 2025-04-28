@@ -11,9 +11,6 @@
 
 /* Each time a packet is sent/received, increment the packet count. */
 static uint16_t packet_count = 0;
-/* Used to decode incoming packets. Since there is only one data stream,
- * there is only one decoder. */
-static SlipDecoder* decoder = NULL;
 
 // SLIP-encode a buffer, calling send_byte() for each output byte
 
@@ -27,7 +24,7 @@ static void slip_encode_packet(const uint8_t* buf, uint16_t len, void (*send_byt
  * @param data Pointer to the data to encode.
  * @param data_len Length of the data to encode.
  * @param cmd Command code.
- * @param send_byte Send a byte to the output stream.
+ * @param send_byte A function to send a byte to the output stream.
  */
 static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t)) {
   /* Flush buffer of any line noise */
@@ -60,7 +57,16 @@ static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd
   send_byte(SLIP_END);
 }
 
-// Compute CRC-CCITT-FALSE (poly 0x1021, init 0xFFFF, no final XOR)
+/** @brief Compute a CRC-16/CCITT-FALSE checksum
+ *
+ * Cyclic Redundancy Check (CRC) is checksum algorithm used to detect errors in data transmissions.
+ *
+ * CRC-16/CCITT-FALSE is a Consultative Committee for International Telephony and Telegraphy (CCITT) 16-bit CRC-variant
+ * with a polynomial of 0x1021, an initial value of 0xFFFF, and no final XOR value.
+ *
+ * @param data Pointer to the data to encode.
+ * @param len Length of the data to encode.
+ */
 static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
   uint16_t crc = 0xFFFF;
   for (uint16_t i = 0; i < len; i++) {
@@ -74,35 +80,30 @@ static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
 }
 
 /**
- * @brief Initializes the SLIP decoder state.
+ * @brief Processes an incoming byte stream for SLIP decoding.
+ *
+ * @param input_byte The incoming byte to process.
+ * @param read_byte A function to read a byte from the input stream.
  */
-void slip_decoder_init() {
-  decoder = (SlipDecoder*)malloc(sizeof(SlipDecoder));
-  if (!decoder) { return; }
-  decoder->buffer = (uint8_t*)malloc(sizeof(uint8_t) * SLIP_DECODER_BUFFER_SIZE);
-  if (!decoder->buffer) {
-    free(decoder);
-    return;
+static void slip_receive_packet(uint8_t input_byte, SlipPacket* decoded_packet, uint8_t (*read_byte)(void)) {
+  if (!decoded_packet || !read_byte) { return; }
+
+  /* Read header fields */
+  decoded_packet->header.length = read_byte() | (read_byte() << 8);
+  decoded_packet->header.crc = read_byte() | (read_byte() << 8);
+  decoded_packet->header.cmd = read_byte();
+  decoded_packet->header.id = read_byte() | (read_byte() << 8);
+
+  /* Read payload */
+  decoded_packet->payload = (uint8_t*)malloc((sizeof(uint8_t) * decoded_packet->header.length));
+  for (uint16_t i = 0; i < decoded_packet->header.length; i++) {
+    uint8_t c = read_byte();
+    if (c == SLIP_END) {
+      decoded_packet->payload[i] = SLIP_END;
+    } else if (c == SLIP_ESC) {
+      decoded_packet->payload[i] = SLIP_ESC;
+    } else {
+      decoded_packet->payload[i] = c;
+    }
   }
-  decoder->buffer_size = SLIP_DECODER_BUFFER_SIZE;
-  decoder->buffer_index = 0;
-  decoder->escape_next = false;
 }
-
-/**
- * @brief Resets the SLIP decoder state.
- */
-void slip_decoder_reset(SlipDecoder* decoder) {
-  decoder->buffer_index = 0;
-  decoder->escape_next = false;
-}
-
-/**
- * @brief Resizes the SLIP decoder buffer.
- */
-void slip_decoder_resize(uint16_t new_size) {
-  decoder->buffer = (uint8_t*)realloc(decoder->buffer, new_size);
-  if (!decoder->buffer) { return; }
-  decoder->buffer_size = new_size;
-}
-

@@ -13,8 +13,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SLIP_DECODER_BUFFER_SIZE 1024
-
 /* Begin typedef declarations */
 
 /* Represents the SLIP special byte codes */
@@ -60,26 +58,11 @@ typedef struct SlipPacket {
     uint8_t* payload;
 } SlipPacket;
 
-/* Structure to hold the state of the SLIP decoder */
-typedef struct SlipDecoder {
-    /* Buffer to hold decoded bytes */
-    uint8_t* buffer;
-    /* Size of the buffer */
-    uint16_t buffer_size;
-    /* Index of the current position in the buffer */
-    uint16_t buffer_index;
-    /* Whether the next byte is an escape character */
-    bool escape_next;
-} SlipDecoder;
-
 /* Begin function prototype declarations */
 
 static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t));
 static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len);
 
-static void slip_decoder_init();
-static void slip_decoder_reset(SlipDecoder* decoder);
-static void slip_decoder_resize(uint16_t new_size);
-static void slip_receive_packet(SlipDecoder* decoder, uint8_t input_byte, SlipPacket* decoded_packet, void (*read_byte)(uint8_t));
+static void slip_receive_packet(uint8_t input_byte, SlipPacket* decoded_packet, uint8_t (*read_byte)(void));
 
 /* Begin inline function declarations */
