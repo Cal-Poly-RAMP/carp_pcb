@@ -12,10 +12,6 @@
 /* Each time a packet is sent/received, increment the packet count. */
 static uint16_t packet_count = 0;
 
-// SLIP-encode a buffer, calling send_byte() for each output byte
-
-static void slip_encode_packet(const uint8_t* buf, uint16_t len, void (*send_byte)(uint8_t)) {}
-
 /** @brief Encode and send one SLIP packet
  *
  * Serializes the packet (cmd, id, payload_len, payload), then SLIP-encodes
@@ -26,15 +22,15 @@ static void slip_encode_packet(const uint8_t* buf, uint16_t len, void (*send_byt
  * @param cmd Command code.
  * @param send_byte A function to send a byte to the output stream.
  */
-static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t)) {
+static void slip_send_packet(const uint8_t* data, uint16_t data_len, slip_cmd_t cmd, void (*send_byte)(uint8_t)) {
   /* Flush buffer of any line noise */
   send_byte(SLIP_END);
 
   /* Populate header fields */
-  SlipHeader hdr;
+  slip_header_t hdr;
   hdr.length = (uint16_t)data_len;
   hdr.crc = crc16_ccitt_false(data, data_len);
-  hdr.cmd = cmd;
+  hdr.cmd = (slip_cmd_t)cmd;
   hdr.id = packet_count;
 
   /* Write header to buffer */
@@ -85,7 +81,7 @@ static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
  * @param input_byte The incoming byte to process.
  * @param read_byte A function to read a byte from the input stream.
  */
-static void slip_receive_packet(uint8_t input_byte, SlipPacket* decoded_packet, uint8_t (*read_byte)(void)) {
+static void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void)) {
   if (!decoded_packet || !read_byte) { return; }
 
   /* Read header fields */

@@ -16,7 +16,7 @@
 /* Begin typedef declarations */
 
 /* Represents the SLIP special byte codes */
-typedef enum SlipByte {
+typedef enum slip_byte_t {
   /* Packet end code */
   SLIP_END = (uint8_t)0xC0,
   /* Escape indicator */
@@ -40,7 +40,7 @@ typedef enum slip_cmd_t {
 } slip_cmd_t;
 
 /* Represents a SLIP packet header (stored in big-endian/network-order) */
-typedef struct __attribute__((packed)) SlipHeader {
+typedef struct __attribute__((packed)) slip_header_t {
     /* The length of the payload in bytes */
     uint16_t length;
     /* The CRC-CCITT-FALSE of the payload */
@@ -49,20 +49,20 @@ typedef struct __attribute__((packed)) SlipHeader {
     uint8_t cmd;
     /* The packet ID */
     uint16_t id;
-} SlipHeader;
+} slip_header_t;
 
-typedef struct SlipPacket {
+typedef struct slip_packet_t {
     /* The header of the packet */
-    SlipHeader header;
+    slip_header_t header;
     /* The data payload of the packet */
     uint8_t* payload;
-} SlipPacket;
+} slip_packet_t;
 
 /* Begin function prototype declarations */
 
-static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t));
+static void slip_send_packet(const uint8_t* data, uint16_t data_len, slip_cmd_t cmd, void (*send_byte)(uint8_t));
 static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len);
 
-static void slip_receive_packet(uint8_t input_byte, SlipPacket* decoded_packet, uint8_t (*read_byte)(void));
+static void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void));
 
 /* Begin inline function declarations */
