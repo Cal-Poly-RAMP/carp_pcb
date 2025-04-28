@@ -42,6 +42,9 @@
 *.i*86
 *.x86_64
 *.hex
+*.hexe
+*.hex.orig
+*.lst
 
 # Debug files
 *.dSYM/
