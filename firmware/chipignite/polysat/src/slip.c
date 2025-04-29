@@ -96,9 +96,7 @@ static void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packe
     decoded_packet->payload = NULL;
   }
   decoded_packet->payload = (uint8_t*)malloc((sizeof(uint8_t) * decoded_packet->header.length));
-  if (decoded_packet->payload == NULL) {
-    return;
-  }
+  if (decoded_packet->payload == NULL) { return; }
   for (uint16_t i = 0; i < decoded_packet->header.length; i++) {
     uint8_t c = read_byte();
     if (c == SLIP_END) {
