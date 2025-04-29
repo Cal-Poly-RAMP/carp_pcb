@@ -25,7 +25,7 @@ typedef enum slip_byte_t {
   SLIP_ESC_END = (uint8_t)0xDC,
   /* Transposed ESC code for ESC */
   SLIP_ESC_ESC = (uint8_t)0xDD,
-} SlipByte;
+} slip_byte_t;
 
 /* Represents the supported SLIP command codes */
 typedef enum slip_cmd_t {
