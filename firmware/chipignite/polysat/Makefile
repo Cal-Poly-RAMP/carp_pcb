@@ -5,18 +5,22 @@ TOOLCHAIN_PREFIX=riscv32-none-elf
 # ARCH=rv32i
 ARCH=rv32i_zicsr
 
+# ---- Project Configuration ----
+SRCDIR = src
+INCDIR = include
+SOURCES = $(wildcard $(SRCDIR)/*.c)
+PROJECT = project
+
 # ---- Test patterns for project raven ----
 
 .SUFFIXES:
 
-PATTERN = blink
+hex:  $(PROJECT).hex
 
-hex:  ${PATTERN:=.hex}
-
-%.elf: %.c ../sections.lds ../crt0_vex.S
+$(PROJECT).elf: $(SOURCES) ../sections.lds ../crt0_vex.S
 	#$(TOOLCHAIN_PREFIX)-gcc -O0 -march=rv32i -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../start.s ../print_io.c $<
-	$(TOOLCHAIN_PREFIX)-gcc -I../ -I../generated/ -O0 -mabi=ilp32 -march=$(ARCH) -D__vexriscv__ -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../crt0_vex.S ../isr.c ../stub.c $<
-	$(TOOLCHAIN_PREFIX)-objdump -D blink.elf > blink.lst
+	$(TOOLCHAIN_PREFIX)-gcc -I../ -I../generated/ -I$(INCDIR) -O0 -mabi=ilp32 -march=$(ARCH) -D__vexriscv__ -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../crt0_vex.S ../isr.c ../stub.c $(SOURCES)
+	$(TOOLCHAIN_PREFIX)-objdump -D $(PROJECT).elf > $(PROJECT).lst
 
 %.hex: %.elf
 	$(TOOLCHAIN_PREFIX)-objcopy -O verilog $< $@
@@ -28,11 +32,11 @@ hex:  ${PATTERN:=.hex}
 client: client.c
 	gcc client.c -o client
 
-flash: blink.hex
-	python3 ../util/caravel_hkflash.py blink.hex
+flash: $(PROJECT).hex
+	python3 ../util/caravel_hkflash.py $(PROJECT).hex
 
-flash2: blink.hex
-	python3 ../util/caravel_flash.py blink.hex
+flash2: $(PROJECT).hex
+	python3 ../util/caravel_flash.py $(PROJECT).hex
 
 show_projectid:
 	python3 ../util/caravel_projectid.py
@@ -40,7 +44,7 @@ show_projectid:
 # ---- Clean ----
 
 clean:
-	rm -f *.elf *.hex *.bin *.vvp *.vcd
+	rm -f $(PROJECT).elf $(PROJECT).hex $(PROJECT).bin $(PROJECT).lst *.vvp *.vcd
 
 .PHONY: clean hex all flash
 

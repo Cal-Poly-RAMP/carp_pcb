@@ -13,6 +13,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Define maximum payload length for static allocation
+#define SLIP_MAX_PAYLOAD_LEN 256
+
 /* Begin typedef declarations */
 
 /* Represents the SLIP special byte codes */
@@ -46,7 +49,7 @@ typedef struct __attribute__((packed)) slip_header_t {
     /* The CRC-CCITT-FALSE of the payload */
     uint16_t crc;
     /* The command code */
-    uint8_t cmd;
+    slip_cmd_t cmd;
     /* The packet ID */
     uint16_t id;
 } slip_header_t;
@@ -55,7 +58,7 @@ typedef struct slip_packet_t {
     /* The header of the packet */
     slip_header_t header;
     /* The data payload of the packet */
-    uint8_t* payload;
+    uint8_t payload[SLIP_MAX_PAYLOAD_LEN]; // Static buffer for payload
 } slip_packet_t;
 
 /* Begin function prototype declarations */

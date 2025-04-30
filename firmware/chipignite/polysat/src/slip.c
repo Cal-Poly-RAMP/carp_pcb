@@ -90,13 +90,16 @@ static void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packe
   decoded_packet->header.cmd = read_byte();
   decoded_packet->header.id = read_byte() | (read_byte() << 8);
 
-  /* Read payload */
-  if (decoded_packet->payload != NULL) {
-    free(decoded_packet->payload);
-    decoded_packet->payload = NULL;
+  /* Check if payload length exceeds buffer size */
+  if (decoded_packet->header.length > SLIP_MAX_PAYLOAD_LEN) {
+    for (uint16_t i = 0; i < decoded_packet->header.length; i++) {
+      read_byte(); // Consume bytes
+    }
+    decoded_packet->header.length = 0; // Indicate error / no payload
+    return;
   }
-  decoded_packet->payload = (uint8_t*)malloc((sizeof(uint8_t) * decoded_packet->header.length));
-  if (decoded_packet->payload == NULL) { return; }
+
+  /* Read payload into static buffer */
   for (uint16_t i = 0; i < decoded_packet->header.length; i++) {
     uint8_t c = read_byte();
     if (c == SLIP_END) {
