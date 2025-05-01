@@ -13,8 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Define maximum payload length for static allocation
-#define SLIP_MAX_PAYLOAD_LEN 256
+// Maximum payload length in bytes
+#define SLIP_MAX_PAYLOAD_LEN 64
 
 /* Begin typedef declarations */
 
@@ -33,13 +33,13 @@ typedef enum slip_byte_t {
 /* Represents the supported SLIP command codes */
 typedef enum slip_cmd_t {
   /* Data command */
-  SLIP_CMD_DATA = 0x01,
+  SLIP_CMD_DATA = (uint8_t)0x01,
   /* Acknowledgment command */
-  SLIP_CMD_ACK = 0x02,
+  SLIP_CMD_ACK = (uint8_t)0x02,
   /* Negative acknowledgment command */
-  SLIP_CMD_NACK = 0x03,
+  SLIP_CMD_NACK = (uint8_t)0x03,
   /* End of transmission command */
-  SLIP_CMD_EOT = 0x04,
+  SLIP_CMD_EOT = (uint8_t)0x04,
 } slip_cmd_t;
 
 /* Represents a SLIP packet header (stored in big-endian/network-order) */
@@ -49,7 +49,7 @@ typedef struct __attribute__((packed)) slip_header_t {
     /* The CRC-CCITT-FALSE of the payload */
     uint16_t crc;
     /* The command code */
-    slip_cmd_t cmd;
+    uint8_t cmd;
     /* The packet ID */
     uint16_t id;
 } slip_header_t;

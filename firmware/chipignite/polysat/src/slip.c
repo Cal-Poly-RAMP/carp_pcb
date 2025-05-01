@@ -22,7 +22,7 @@ static uint16_t packet_count = 0;
  * @param cmd Command code.
  * @param send_byte A function to send a byte to the output stream.
  */
-static void slip_send_packet(const uint8_t* data, uint16_t data_len, slip_cmd_t cmd, void (*send_byte)(uint8_t)) {
+static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t)) {
   /* Flush buffer of any line noise */
   send_byte(SLIP_END);
 
@@ -87,7 +87,7 @@ static void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packe
   /* Read header fields */
   decoded_packet->header.length = read_byte() | (read_byte() << 8);
   decoded_packet->header.crc = read_byte() | (read_byte() << 8);
-  decoded_packet->header.cmd = read_byte();
+  decoded_packet->header.cmd = (slip_cmd_t)read_byte();
   decoded_packet->header.id = read_byte() | (read_byte() << 8);
 
   /* Check if payload length exceeds buffer size */
