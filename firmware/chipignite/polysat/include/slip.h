@@ -54,11 +54,12 @@ typedef struct __attribute__((packed)) slip_header_t {
     uint16_t id;
 } slip_header_t;
 
+/* Represents a SLIP packet */
 typedef struct slip_packet_t {
     /* The header of the packet */
     slip_header_t header;
-    /* The data payload of the packet */
-    uint8_t payload[SLIP_MAX_PAYLOAD_LEN]; // Static buffer for payload
+    /* The data payload of the packet (static buffer) */
+    uint8_t payload[SLIP_MAX_PAYLOAD_LEN];
 } slip_packet_t;
 
 /* Begin function prototype declarations */
