@@ -49,7 +49,7 @@ extern uint32_t flashio_worker_end;
 #define reg_debug_data (*(volatile uint32_t*)CSR_DEBUG_RXTX_ADDR)
 #define reg_debug_txfull (*(volatile uint32_t*)CSR_DEBUG_TXFULL_ADDR)
 #define reg_debug_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_3_EV_ENABLE_ADDR)
-#define reg_debug_enable (*(volatile uint32_t*) CSR_UART_ENABLED_OUT_ADDR)
+#define reg_debug_enable (*(volatile uint32_t*)CSR_UART_ENABLED_OUT_ADDR)
 
 // GPIO (0x2100_0000)
 #define reg_gpio_mode1 (*(volatile uint32_t*)CSR_GPIO_MODE1_ADDR)
