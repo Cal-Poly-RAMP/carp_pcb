@@ -7,6 +7,8 @@
 // Firmware routines
 // --------------------------------------------------------
 
+/** @brief Configure the IO pins
+ */
 void configure_io() {
   //  ======= Useful GPIO mode values =============
 
@@ -83,6 +85,10 @@ void configure_io() {
   while (reg_mprj_xfer == 1);
 }
 
+/** @brief Delay in microseconds
+ *
+ * @param d Delay in microseconds.
+ */
 void delay(const int d) {
   /* Configure timer for a single-shot countdown */
   reg_timer0_config = 0;
@@ -94,16 +100,17 @@ void delay(const int d) {
   while (reg_timer0_value > 0) { reg_timer0_update = 1; }
 }
 
-void send_byte(uint8_t c) {
-  reg_mprj_datah = c;
-  reg_mprj_datal = c;
-}
+/** @brief Turn off the LED
+ */
+void led_off() { reg_gpio_out = 1; }
 
-uint8_t read_byte(void) { return reg_mprj_datah; }
+/** @brief Turn on the LED
+ */
+void led_on() { reg_gpio_out = 0; }
 
+/** @brief Entry point
+ */
 void main() {
-  int i, j, k;
-
   reg_gpio_mode1 = 1;
   reg_gpio_mode0 = 0;
   reg_gpio_ien = 1;
@@ -131,21 +138,22 @@ void main() {
   //	data2 = reg_la2_data;
   //	data3 = reg_la3_data;
 
-  print("Hello World !!");
+  bool pulse = false;
+
+  // Turn off all GPIO outputs
+  reg_mprj_datah = 0x00000000; // Set all high pins (32-37) low
+  reg_mprj_datal = 0x00000000; // Set all low pins (0-31) low
 
   while (1) {
-    reg_gpio_out = 1; // OFF
-    reg_mprj_datal = 0x00000000;
-    reg_mprj_datah = 0x00000000;
+    if (!pulse) {
+      led_off();
+      reg_mprj_io_33 = 1; // Set GPIO 33 high
+    } else {
+      led_on();
+      reg_mprj_io_33 = 0; // Set GPIO 33 low
+    }
+    pulse = !pulse;
 
-    delay(800000);
-    //		delay(8000000);
-
-    reg_gpio_out = 0; // ON
-    reg_mprj_datah = 0x0000003f;
-    reg_mprj_datal = 0xffffffff;
-
-    delay(800000);
-    //		delay(8000000);
+    delay(10000000);
   }
 }
