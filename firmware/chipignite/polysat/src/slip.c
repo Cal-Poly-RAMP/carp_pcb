@@ -22,7 +22,7 @@ static uint16_t packet_count = 0;
  * @param cmd Command code.
  * @param send_byte A function to send a byte to the output stream.
  */
-static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t)) {
+void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t)) {
   /* Flush buffer of any line noise */
   send_byte(SLIP_END);
 
@@ -63,7 +63,7 @@ static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd
  * @param data Pointer to the data to encode.
  * @param len Length of the data to encode.
  */
-static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
+uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
   uint16_t crc = 0xFFFF;
   for (uint16_t i = 0; i < len; i++) {
     crc ^= (uint16_t)data[i] << 8;
@@ -81,7 +81,7 @@ static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
  * @param input_byte The incoming byte to process.
  * @param read_byte A function to read a byte from the input stream.
  */
-static void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void)) {
+void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void)) {
   if (!decoded_packet || !read_byte) { return; }
 
   /* Read header fields */

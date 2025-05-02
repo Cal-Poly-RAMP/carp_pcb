@@ -63,9 +63,8 @@ typedef struct slip_packet_t {
 
 /* Begin function prototype declarations */
 
-static void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t));
-static uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len);
-
-static void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void));
+extern void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t));
+extern uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len);
+extern void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void));
 
 /* Begin inline function declarations */
