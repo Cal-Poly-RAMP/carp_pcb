@@ -112,14 +112,17 @@ void led_on() { reg_gpio_out = 0; }
 /** @brief Entry point
  */
 void main() {
+  // Initialize GPIO
   reg_gpio_mode1 = 1;
   reg_gpio_mode0 = 0;
   reg_gpio_ien = 1;
   reg_gpio_oe = 1;
 
+  // Configure IO pins including UART pins
   configure_io();
 
-  reg_uart_enable = 1;
+  // Initialize UART
+  uart_init();
 
   // Configure All LA probes as inputs to the cpu
   reg_la0_oenb = reg_la0_iena = 0x00000000; // [31:0]
@@ -145,7 +148,15 @@ void main() {
   reg_mprj_datah = 0x00000000; // Set all high pins (32-37) low
   reg_mprj_datal = 0x00000000; // Set all low pins (0-31) low
 
+  // Main loop - echo received characters and blink LED and
   while (1) {
+    // // Check if data is available to read
+    // if (uart_read_available()) {
+    //   // Read and echo back the character
+    //   uint8_t c = uart_read();
+    //   uart_write(c);
+    // }
+
     if (!pulse) {
       led_off();
       reg_mprj_io_33 = 1; // Set GPIO 33 high
@@ -155,6 +166,7 @@ void main() {
     }
     pulse = !pulse;
 
+    // Wait for 1 second
     delay(10000000);
   }
 }

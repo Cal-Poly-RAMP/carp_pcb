@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 /* Begin typedef declarations */
 
 /* Begin function prototype declarations */
@@ -18,12 +20,12 @@ extern "C" {
 #define UART_EV_RX 0x2
 
 void uart_init(void);
-void uart_isr(void);
 void uart_sync(void);
 
-void uart_write(char c);
-char uart_read(void);
-int uart_read_nonblock(void);
+void uart_write(uint8_t c);
+uint8_t uart_read(void);
+int uart_read_available(void);
+int uart_write_available(void);
 
 #ifdef __cplusplus
 }

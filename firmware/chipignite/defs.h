@@ -37,19 +37,19 @@ extern uint32_t flashio_worker_end;
 #define reg_ro_block0 (*(volatile uint32_t*)0x02000000)
 
 // UART (0x2000_0000)
-// #define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
+#define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
 #define reg_uart_data (*(volatile uint32_t*)CSR_UART_RXTX_ADDR)
 #define reg_uart_txfull (*(volatile uint32_t*)CSR_UART_TXFULL_ADDR)
 #define reg_uart_enable (*(volatile uint32_t*)CSR_UART_ENABLED_OUT_ADDR)
 #define reg_uart_irq_en (*(volatile uint32_t*)CSR_UART_EV_ENABLE_ADDR) // ADDED
 
 // DEBUG (0x2000_0000)
-// #define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
+#define reg_uart_clkdiv (*(volatile uint32_t*)0x20000000)
 #define reg_reset (*(volatile uint32_t*)CSR_CTRL_RESET_ADDR)
 #define reg_debug_data (*(volatile uint32_t*)CSR_DEBUG_RXTX_ADDR)
 #define reg_debug_txfull (*(volatile uint32_t*)CSR_DEBUG_TXFULL_ADDR)
 #define reg_debug_irq_en (*(volatile uint32_t*)CSR_USER_IRQ_3_EV_ENABLE_ADDR)
-// #define reg_debug_enable (*(volatile uint32_t*) CSR_UART_ENABLED_OUT_ADDR)
+#define reg_debug_enable (*(volatile uint32_t*) CSR_UART_ENABLED_OUT_ADDR)
 
 // GPIO (0x2100_0000)
 #define reg_gpio_mode1 (*(volatile uint32_t*)CSR_GPIO_MODE1_ADDR)
