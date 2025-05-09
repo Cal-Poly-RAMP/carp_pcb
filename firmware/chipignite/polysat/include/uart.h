@@ -9,6 +9,10 @@
 
 #include <stdint.h>
 
+#define UART_BAUD_RATE 9600
+#define CRYSTAL_CLK 10000000
+#define UART_CLKDIV ((CRYSTAL_CLK / UART_BAUD_RATE))
+
 /* Begin typedef declarations */
 
 /* Begin function prototype declarations */

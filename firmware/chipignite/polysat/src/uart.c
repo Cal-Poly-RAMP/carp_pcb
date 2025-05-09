@@ -14,7 +14,7 @@
  */
 void uart_init(void) {
   // Configure the UART
-  reg_uart_clkdiv = 10;
+  reg_uart_clkdiv = UART_CLKDIV;
   reg_uart_enable = 1;
 
   // Clear any pending interrupts
