@@ -3,7 +3,7 @@
 #include <csr.h>
 #include "../include/slip.h"
 #include "../include/uart.h"
-
+#include "../include/gpio.h"
 // --------------------------------------------------------
 // Firmware routines
 // --------------------------------------------------------
