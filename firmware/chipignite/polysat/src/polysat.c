@@ -81,6 +81,10 @@ void configure_io() {
   reg_mprj_io_36 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_37 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
 
+
+  // Initialize UART
+  uart_init();
+
   // Initiate the serial transfer to configure IO
   reg_mprj_xfer = 1;
   while (reg_mprj_xfer == 1);
@@ -121,9 +125,6 @@ void main() {
   // Configure IO pins including UART pins
   configure_io();
 
-  // Initialize UART
-  uart_init();
-
   // Configure All LA probes as inputs to the cpu
   reg_la0_oenb = reg_la0_iena = 0x00000000; // [31:0]
   reg_la1_oenb = reg_la1_iena = 0x00000000; // [63:32]
@@ -159,10 +160,12 @@ void main() {
 
     if (!pulse) {
       led_off();
-      reg_mprj_io_33 = 1; // Set GPIO 33 high
+      // Set GPIO 33 low (bit 1)
+      gpio_clear(33);
     } else {
       led_on();
-      reg_mprj_io_33 = 0; // Set GPIO 33 low
+      // Set GPIO 33 high (bit 1)
+      gpio_set(33, true);
     }
     pulse = !pulse;
 
