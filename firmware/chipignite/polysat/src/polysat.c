@@ -4,6 +4,7 @@
 #include "../include/slip.h"
 #include "../include/uart.h"
 #include "../include/gpio.h"
+
 // --------------------------------------------------------
 // Firmware routines
 // --------------------------------------------------------
@@ -75,12 +76,11 @@ void configure_io() {
   reg_mprj_io_30 = GPIO_MODE_MGMT_STD_INPUT_PULLUP; // High
   reg_mprj_io_31 = GPIO_MODE_MGMT_STD_INPUT_PULLDOWN; // Low
   reg_mprj_io_32 = GPIO_MODE_MGMT_STD_INPUT_PULLUP; // High
-  reg_mprj_io_33 = GPIO_MODE_MGMT_STD_OUTPUT; //
+  reg_mprj_io_33 = GPIO_MODE_MGMT_STD_OUTPUT; // Controlled by the code
   reg_mprj_io_34 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_35 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_36 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_37 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-
 
   // Initialize UART
   uart_init();
@@ -154,8 +154,9 @@ void main() {
     // // Check if data is available to read
     // if (uart_read_available()) {
     //   // Read and echo back the character
-    //   uint8_t c = uart_read();
-    //   uart_write(c);
+    //   uint8_t ch = uart_read();
+    //   uart_write(ch);
+    //   slip_send_packet(c, 1, SLIP_CMD_DATA, uart_write);
     // }
 
     if (!pulse) {

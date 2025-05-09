@@ -14,7 +14,6 @@
 
 /* Begin function prototype declarations */
 
-
 bool valid_pin(uint32_t pin);
 void gpio_set(uint32_t pin, bool value);
 void gpio_clear(uint32_t pin);
