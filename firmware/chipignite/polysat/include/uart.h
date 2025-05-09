@@ -22,7 +22,7 @@ extern "C" {
 void uart_init(void);
 void uart_sync(void);
 
-void uart_write(uint8_t c);
+void uart_write(uint8_t ch);
 uint8_t uart_read(void);
 int uart_read_available(void);
 int uart_write_available(void);

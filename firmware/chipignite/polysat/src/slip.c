@@ -5,7 +5,7 @@
  * Provides functions to encode and decode SLIP packets in loose accordance with RFC 1055.
  */
 
-#include "slip.h"
+#include "../include/slip.h"
 #include <string.h>
 #include <stdlib.h>
 

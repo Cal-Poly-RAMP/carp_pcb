@@ -33,12 +33,12 @@ void uart_sync(void) {
 
 /** @brief Write a character to the UART
  */
-void uart_write(uint8_t c) {
+void uart_write(uint8_t ch) {
   // Wait until TX buffer is not full
   while (uart_txfull_read());
 
   // Write the character
-  uart_rxtx_write(c);
+  uart_rxtx_write(ch);
 }
 
 /** @brief Read a character from the UART

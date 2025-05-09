@@ -1,8 +1,8 @@
 #include <defs.h>
 #include <stub.h>
 #include <csr.h>
-#include "slip.h"
-#include "uart.h"
+#include "../include/slip.h"
+#include "../include/uart.h"
 
 // --------------------------------------------------------
 // Firmware routines
