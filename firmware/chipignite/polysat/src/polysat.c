@@ -169,6 +169,8 @@ void main() {
       gpio_set(33, true);
     }
     pulse = !pulse;
+    const char message_to_send[] = "Hello, World!";
+    slip_send_packet(message_to_send, sizeof(message_to_send) - 1, SLIP_CMD_DATA, uart_write);
 
     // Wait for 1 second
     delay(10000000);

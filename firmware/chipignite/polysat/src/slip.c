@@ -31,7 +31,7 @@ void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void 
   hdr.length = (uint16_t)data_len;
   hdr.crc = crc16_ccitt_false(data, data_len);
   hdr.cmd = (slip_cmd_t)cmd;
-  hdr.id = packet_count;
+  hdr.id = packet_count++;
 
   /* Write header to buffer */
   uint8_t* buffer = (uint8_t*)&hdr;
@@ -88,7 +88,8 @@ void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint
   decoded_packet->header.length = read_byte() | (read_byte() << 8);
   decoded_packet->header.crc = read_byte() | (read_byte() << 8);
   decoded_packet->header.cmd = (slip_cmd_t)read_byte();
-  decoded_packet->header.id = read_byte() | (read_byte() << 8);
+  packet_count = decoded_packet->header.id = read_byte() | (read_byte() << 8);
+  packet_count++;
 
   /* Check if payload length exceeds buffer size */
   if (decoded_packet->header.length > SLIP_MAX_PAYLOAD_LEN) {

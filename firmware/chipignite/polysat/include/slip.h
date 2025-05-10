@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Maximum payload length in bytes
+/* Maximum payload length in bytes */
 #define SLIP_MAX_PAYLOAD_LEN 64
 
 /* Begin typedef declarations */
