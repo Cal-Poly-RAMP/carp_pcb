@@ -44,22 +44,22 @@ typedef enum slip_cmd_t {
 
 /* Represents a SLIP packet header (stored in big-endian/network-order) */
 typedef struct __attribute__((packed)) slip_header_t {
-  /* The length of the payload in bytes */
-  uint16_t length;
-  /* The CRC-CCITT-FALSE of the payload */
-  uint16_t crc;
-  /* The command code */
-  uint8_t cmd;
-  /* The packet ID */
-  uint16_t id;
+    /* The length of the payload in bytes */
+    uint16_t length;
+    /* The CRC-CCITT-FALSE of the payload */
+    uint16_t crc;
+    /* The command code */
+    uint8_t cmd;
+    /* The packet ID */
+    uint16_t id;
 } slip_header_t;
 
 /* Represents a SLIP packet */
 typedef struct slip_packet_t {
-  /* The header of the packet */
-  slip_header_t header;
-  /* The data payload of the packet (static buffer) */
-  uint8_t payload[SLIP_MAX_PAYLOAD_LEN];
+    /* The header of the packet */
+    slip_header_t header;
+    /* The data payload of the packet (static buffer) */
+    uint8_t payload[SLIP_MAX_PAYLOAD_LEN];
 } slip_packet_t;
 
 /* Begin function prototype declarations */
