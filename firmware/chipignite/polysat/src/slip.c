@@ -31,11 +31,16 @@ void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void 
   hdr.length = (uint16_t)data_len;
   hdr.crc = crc16_ccitt_false(data, data_len);
   hdr.cmd = (slip_cmd_t)cmd;
-  hdr.id = packet_count++;
+
+  /* Check if payload length exceeds buffer size */
+  if (data_len > SLIP_MAX_PAYLOAD_LEN) { return; }
 
   /* Write header to buffer */
   uint8_t* buffer = (uint8_t*)&hdr;
-  for (uint16_t i = 0; i < sizeof(hdr); i++) { send_byte(buffer[i]); }
+  for (uint16_t byte = 0; byte < sizeof(hdr); byte++) { send_byte(buffer[byte]); }
+
+  /* Update packet count */
+  packet_count++;
 
   /* SLIP-encode the payload */
   for (uint16_t i = 0; i < data_len; i++) {
@@ -84,12 +89,12 @@ uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
 void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void)) {
   if (!decoded_packet || !read_byte) { return; }
 
-  /* Read header fields */
-  decoded_packet->header.length = read_byte() | (read_byte() << 8);
-  decoded_packet->header.crc = read_byte() | (read_byte() << 8);
-  decoded_packet->header.cmd = (slip_cmd_t)read_byte();
-  packet_count = decoded_packet->header.id = read_byte() | (read_byte() << 8);
-  packet_count++;
+  /* Read header from buffer */
+  uint8_t* buffer = (uint8_t*)decoded_packet;
+  for (uint16_t byte = 0; byte < sizeof(*decoded_packet); byte++) { buffer[byte] = read_byte(); }
+
+  /* Update packet count */
+  packet_count = decoded_packet->header.id + 1;
 
   /* Check if payload length exceeds buffer size */
   if (decoded_packet->header.length > SLIP_MAX_PAYLOAD_LEN) {

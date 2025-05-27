@@ -151,14 +151,6 @@ void main() {
 
   // Main loop - echo received characters and blink LED and
   while (1) {
-    // // Check if data is available to read
-    // if (uart_read_available()) {
-    //   // Read and echo back the character
-    //   uint8_t ch = uart_read();
-    //   uart_write(ch);
-    //   slip_send_packet(c, 1, SLIP_CMD_DATA, uart_write);
-    // }
-
     if (!pulse) {
       led_off();
       // Set GPIO 33 low (bit 1)
