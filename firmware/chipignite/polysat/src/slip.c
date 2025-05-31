@@ -108,10 +108,13 @@ void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint
   /* Read payload into static buffer */
   for (uint16_t i = 0; i < decoded_packet->header.length; i++) {
     uint8_t c = read_byte();
-    if (c == SLIP_END) {
-      decoded_packet->payload[i] = SLIP_END;
-    } else if (c == SLIP_ESC) {
-      decoded_packet->payload[i] = SLIP_ESC;
+    if (c == SLIP_ESC) {
+      c = read_byte();
+      if (c == SLIP_ESC_END) {
+        decoded_packet->payload[i] = SLIP_END;
+      } else if (c == SLIP_ESC_ESC) {
+        decoded_packet->payload[i] = SLIP_ESC;
+      }
     } else {
       decoded_packet->payload[i] = c;
     }
