@@ -37,7 +37,7 @@ void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void 
 
   /* Write header to buffer */
   uint8_t* buffer = (uint8_t*)&hdr;
-  for (uint16_t byte = 0; byte < sizeof(hdr); byte++) { send_byte(buffer[byte]); }
+  for (uint16_t byte = 0; byte < sizeof(slip_header_t); byte++) { send_byte(buffer[byte]); }
 
   /* Update packet count */
   packet_count++;
@@ -87,11 +87,12 @@ uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len) {
  * @param read_byte A function to read a byte from the input stream.
  */
 void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void)) {
-  if (!decoded_packet || !read_byte) { return; }
+  uint8_t temp;
+  while ((temp = read_byte()) != SLIP_END);
 
   /* Read header from buffer */
   uint8_t* buffer = (uint8_t*)decoded_packet;
-  for (uint16_t byte = 0; byte < sizeof(*decoded_packet); byte++) { buffer[byte] = read_byte(); }
+  for (uint16_t byte = 0; byte < sizeof(slip_header_t); byte++) { buffer[byte] = read_byte(); }
 
   /* Update packet count */
   packet_count = decoded_packet->header.id + 1;
@@ -119,4 +120,6 @@ void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint
       decoded_packet->payload[i] = c;
     }
   }
+
+  while ((read_byte()) != SLIP_END);
 }
