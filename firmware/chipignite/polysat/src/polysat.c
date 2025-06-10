@@ -89,8 +89,7 @@ void configure_io() {
 
   // Initiate the serial transfer to configure IO
   reg_mprj_xfer = 1;
-  while (reg_mprj_xfer == 1)
-    ;
+  while (reg_mprj_xfer == 1);
 }
 
 /** @brief Delay in microseconds
