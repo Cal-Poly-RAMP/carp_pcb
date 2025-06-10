@@ -166,6 +166,9 @@ void main() {
     }
     pulse = !pulse;
 
+    // Send a heartbeat packet to the host
+    slip_send_heartbeat(uart_write);
+
     // For every non-zero element in the array, set back to zero and send a packet to the host
     for (uint32_t i = 0; i < (uint32_t)(sizeof(zero_array) / sizeof(*zero_array)); i++) {
       if (zero_array[i] != 0) {
