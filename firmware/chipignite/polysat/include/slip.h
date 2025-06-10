@@ -40,6 +40,8 @@ typedef enum slip_cmd_t {
   SLIP_CMD_NACK = (uint8_t)0x03,
   /* End of transmission command */
   SLIP_CMD_EOT = (uint8_t)0x04,
+  /* Heartbeat command */
+  SLIP_CMD_HEARTBEAT = (uint8_t)0x05,
 } slip_cmd_t;
 
 /* Represents a SLIP packet header (stored in big-endian/network-order) */
@@ -65,6 +67,7 @@ typedef struct slip_packet_t {
 /* Begin function prototype declarations */
 
 extern void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void (*send_byte)(uint8_t));
+extern void slip_send_heartbeat(void (*send_byte)(uint8_t));
 extern uint16_t crc16_ccitt_false(const uint8_t* data, uint16_t len);
 extern void slip_receive_packet(uint8_t input_byte, slip_packet_t* decoded_packet, uint8_t (*read_byte)(void));
 

@@ -58,6 +58,16 @@ void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void 
   send_byte(SLIP_END);
 }
 
+/** @brief Send a heartbeat packet
+ *
+ * Sends a heartbeat packet to the host.
+ *
+ * @param send_byte A function to send a byte to the output stream.
+ */
+void slip_send_heartbeat(void (*send_byte)(uint8_t)) {
+  slip_send_packet(NULL, 0, SLIP_CMD_HEARTBEAT, send_byte);
+}
+
 /** @brief Compute a CRC-16/CCITT-FALSE checksum
  *
  * Cyclic Redundancy Check (CRC) is checksum algorithm used to detect errors in data transmissions.
