@@ -5,6 +5,8 @@
 #include "../include/uart.h"
 #include "../include/gpio.h"
 
+#define ARRAY_SIZE 100
+
 // --------------------------------------------------------
 // Firmware routines
 // --------------------------------------------------------
@@ -149,8 +151,11 @@ void main() {
   reg_mprj_datah = 0x00000000; // Set all high pins (32-37) low
   reg_mprj_datal = 0x00000000; // Set all low pins (0-31) low
 
+  // Define a static array of items initialized to zero
+  static uint8_t zero_array[ARRAY_SIZE] = {0};
+
   // Main loop - echo received characters and blink LED and
-  while (1) {
+  while (true) {
     if (!pulse) {
       led_off();
       // Set GPIO 33 low (bit 1)
@@ -161,8 +166,21 @@ void main() {
       gpio_set(33, true);
     }
     pulse = !pulse;
-    const char message_to_send[] = "Hello, World!";
-    slip_send_packet(message_to_send, sizeof(message_to_send) - 1, SLIP_CMD_DATA, uart_write);
+
+    // For every non-zero element in the array, set back to zero and send a packet to the host
+    for (uint32_t i = 0; i < ARRAY_SIZE; i++) {
+      if (zero_array[i] != 0) {
+        // When a non-zero element is found (due to radiation), send a packet to the host
+        struct {
+            uint8_t* base_address; // base address of the array
+            uint8_t index; // index of the non-zero element
+            uint8_t value; // value of the non-zero element
+        } carp_data = {zero_array, i, zero_array[i]};
+
+        slip_send_packet((uint8_t*)&carp_data, sizeof(carp_data), SLIP_CMD_DATA, uart_write);
+        zero_array[i] = 0;
+      }
+    }
 
     // Wait for 1 second
     delay(10000000);
