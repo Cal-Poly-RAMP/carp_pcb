@@ -89,7 +89,8 @@ void configure_io() {
 
   // Initiate the serial transfer to configure IO
   reg_mprj_xfer = 1;
-  while (reg_mprj_xfer == 1);
+  while (reg_mprj_xfer == 1)
+    ;
 }
 
 /** @brief Delay in microseconds
@@ -168,7 +169,7 @@ void main() {
     pulse = !pulse;
 
     // For every non-zero element in the array, set back to zero and send a packet to the host
-    for (uint32_t i = 0; i < ARRAY_SIZE; i++) {
+    for (uint32_t i = 0; i < (uint32_t)(sizeof(zero_array) / sizeof(*zero_array)); i++) {
       if (zero_array[i] != 0) {
         // When a non-zero element is found (due to radiation), send a packet to the host
         struct {
