@@ -1,7 +1,6 @@
 #include <defs.h>
 #include <stub.h>
 #include <csr.h>
-#include "../include/slip.h"
 #include "../include/uart.h"
 #include "../include/gpio.h"
 
@@ -52,43 +51,45 @@ void configure_io() {
   reg_mprj_io_5 = GPIO_MODE_MGMT_STD_INPUT_NOPULL; // UART Rx
   reg_mprj_io_6 = GPIO_MODE_MGMT_STD_OUTPUT; // UART Tx
   reg_mprj_io_7 = GPIO_MODE_MGMT_STD_INPUT_NOPULL; // Used for reset
-  reg_mprj_io_8 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_9 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_10 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_11 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_12 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_13 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
+  reg_mprj_io_8 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_9 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_10 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_11 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_12 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_13 = GPIO_MODE_MGMT_STD_OUTPUT;
   reg_mprj_io_14 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_15 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_16 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_17 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_18 = GPIO_MODE_MGMT_STD_INPUT_NOPULL; // Do not change, otherwise UART is no go
-  reg_mprj_io_19 = GPIO_MODE_MGMT_STD_INPUT_NOPULL; // Do not change, otherwise UART is no go
-  reg_mprj_io_20 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_21 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
+  reg_mprj_io_18 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
+
+  reg_mprj_io_19 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
+  reg_mprj_io_20 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_21 = GPIO_MODE_MGMT_STD_OUTPUT;
   reg_mprj_io_22 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_23 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_24 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_25 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_26 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_27 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_28 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_29 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_30 = GPIO_MODE_MGMT_STD_INPUT_PULLUP; // High
-  reg_mprj_io_31 = GPIO_MODE_MGMT_STD_INPUT_PULLDOWN; // Low
-  reg_mprj_io_32 = GPIO_MODE_MGMT_STD_INPUT_PULLUP; // High
+  reg_mprj_io_28 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_29 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_30 = GPIO_MODE_MGMT_STD_OUTPUT; // High
+  reg_mprj_io_31 = GPIO_MODE_MGMT_STD_OUTPUT; // Low
+  reg_mprj_io_32 = GPIO_MODE_MGMT_STD_OUTPUT; // High
   reg_mprj_io_33 = GPIO_MODE_MGMT_STD_OUTPUT; // Controlled by the code
-  reg_mprj_io_34 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_35 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_36 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_37 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
+  reg_mprj_io_34 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_35 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_36 = GPIO_MODE_MGMT_STD_OUTPUT;
+  reg_mprj_io_37 = GPIO_MODE_MGMT_STD_OUTPUT;
 
   // Initialize UART
   uart_init();
 
   // Initiate the serial transfer to configure IO
   reg_mprj_xfer = 1;
-  while (reg_mprj_xfer == 1);
+  while (reg_mprj_xfer == 1)
+    ;
 }
 
 /** @brief Delay in microseconds
@@ -144,8 +145,6 @@ void main() {
   //	data2 = reg_la2_data;
   //	data3 = reg_la3_data;
 
-  bool pulse = false;
-
   // Turn off all GPIO outputs
   reg_mprj_datah = 0x00000000; // Set all high pins (32-37) low
   reg_mprj_datal = 0x00000000; // Set all low pins (0-31) low
@@ -155,31 +154,8 @@ void main() {
 
   // Main loop - echo received characters and blink LED and
   while (true) {
-    if (!pulse) {
-      led_off();
-      // Set GPIO 33 low (bit 1)
-      gpio_clear(33);
-    } else {
-      led_on();
-      // Set GPIO 33 high (bit 1)
-      gpio_set(33, true);
-    }
-    pulse = !pulse;
-
-    // For every non-zero element in the array, set back to zero and send a packet to the host
-    for (uint32_t i = 0; i < (uint32_t)(sizeof(zero_array) / sizeof(*zero_array)); i++) {
-      if (zero_array[i] != 0) {
-        // When a non-zero element is found (due to radiation), send a packet to the host
-        struct {
-            uint8_t* base_address; // base address of the array
-            uint8_t index; // index of the non-zero element
-            uint8_t value; // value of the non-zero element
-        } carp_data = {zero_array, i, zero_array[i]};
-
-        slip_send_packet((uint8_t*)&carp_data, sizeof(carp_data), SLIP_CMD_DATA, uart_write);
-        zero_array[i] = 0;
-      }
-    }
+    // Set all GPIO pins to high
+    for (uint32_t i = 0; i <= 37; i++) { gpio_set(i, true); }
 
     // Wait for 1 second
     delay(10000000);
