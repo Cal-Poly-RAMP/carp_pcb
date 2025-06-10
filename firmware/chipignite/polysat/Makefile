@@ -9,7 +9,7 @@ ARCH=rv32i_zicsr
 SRCDIR = src
 INCDIR = include
 SOURCES = $(wildcard $(SRCDIR)/*.c)
-PROJECT = project
+PROJECT = polysat
 
 # ---- Test patterns for project raven ----
 

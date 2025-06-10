@@ -65,7 +65,8 @@ void slip_send_packet(const uint8_t* data, uint16_t data_len, uint8_t cmd, void 
  * @param send_byte A function to send a byte to the output stream.
  */
 void slip_send_heartbeat(void (*send_byte)(uint8_t)) {
-  slip_send_packet(NULL, 0, SLIP_CMD_HEARTBEAT, send_byte);
+  uint8_t dummy = 0;
+  slip_send_packet(&dummy, 0, SLIP_CMD_HEARTBEAT, send_byte);
 }
 
 /** @brief Compute a CRC-16/CCITT-FALSE checksum

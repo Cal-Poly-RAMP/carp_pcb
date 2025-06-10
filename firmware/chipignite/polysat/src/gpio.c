@@ -11,7 +11,7 @@ void gpio_set(uint32_t pin, bool value) {
   if (pin < 32) {
     // Register for low pins (0-31)
     reg_mprj_datal |= (1 << (pin % 32));
-  } else if (pin < 37) {
+  } else if (pin <= 37) {
     // Register for high pins (32-37)
     reg_mprj_datah |= (1 << (pin % 32));
   }
@@ -25,7 +25,7 @@ void gpio_clear(uint32_t pin) {
   if (pin < 32) {
     // Register for low pins (0-31)
     reg_mprj_datal &= ~(1 << (pin % 32));
-  } else if (pin < 37) {
+  } else if (pin <= 37) {
     // Register for high pins (32-37)
     reg_mprj_datah &= ~(1 << (pin % 32));
   }
@@ -39,7 +39,7 @@ void gpio_toggle(uint32_t pin) {
   if (pin < 32) {
     // Register for low pins (0-31)
     reg_mprj_datal ^= (1 << (pin % 32));
-  } else if (pin < 37) {
+  } else if (pin <= 37) {
     // Register for high pins (32-37)
     reg_mprj_datah ^= (1 << (pin % 32));
   }
@@ -54,7 +54,7 @@ bool gpio_get(uint32_t pin) {
   if (pin < 32) {
     // Register for low pins (0-31)
     return (reg_mprj_datal & (1 << (pin % 32))) != 0;
-  } else if (pin < 37) {
+  } else if (pin <= 37) {
     // Register for high pins (32-37)
     return (reg_mprj_datah & (1 << (pin % 32))) != 0;
   }
