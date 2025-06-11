@@ -74,9 +74,9 @@ void configure_io() {
   reg_mprj_io_27 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_28 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_29 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
-  reg_mprj_io_30 = GPIO_MODE_MGMT_STD_INPUT_PULLUP; // High
-  reg_mprj_io_31 = GPIO_MODE_MGMT_STD_INPUT_PULLDOWN; // Low
-  reg_mprj_io_32 = GPIO_MODE_MGMT_STD_INPUT_PULLUP; // High
+  reg_mprj_io_30 = GPIO_MODE_MGMT_STD_OUTPUT; // Controlled by the code
+  reg_mprj_io_31 = GPIO_MODE_MGMT_STD_OUTPUT; // Controlled by the code
+  reg_mprj_io_32 = GPIO_MODE_MGMT_STD_OUTPUT; // Controlled by the code
   reg_mprj_io_33 = GPIO_MODE_MGMT_STD_OUTPUT; // Controlled by the code
   reg_mprj_io_34 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
   reg_mprj_io_35 = GPIO_MODE_MGMT_STD_INPUT_NOPULL;
@@ -156,13 +156,11 @@ void main() {
   // Main loop - echo received characters and blink LED and
   while (true) {
     if (!pulse) {
-      led_off();
-      // Set GPIO 33 low (bit 1)
-      gpio_clear(33);
+      reg_mprj_datah = 0x00000000; // Set all high pins (32-37) low
+      reg_mprj_datal = 0x00000000; // Set all low pins (0-31) low
     } else {
-      led_on();
-      // Set GPIO 33 high (bit 1)
-      gpio_set(33, true);
+      reg_mprj_datah = 0xFFFFFFFF; // Set all high pins (32-37) high
+      reg_mprj_datal = 0xFFFFFFFF; // Set all low pins (0-31) high
     }
     pulse = !pulse;
 

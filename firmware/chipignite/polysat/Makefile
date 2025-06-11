@@ -44,7 +44,7 @@ show_projectid:
 # ---- Clean ----
 
 clean:
-	rm -f $(PROJECT).elf $(PROJECT).hex $(PROJECT).bin $(PROJECT).lst *.vvp *.vcd
+	rm -f $(PROJECT).elf $(PROJECT).hex $(PROJECT).hexe $(PROJECT).bin $(PROJECT).lst *.vvp *.vcd
 
 .PHONY: clean hex all flash
 

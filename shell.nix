@@ -29,6 +29,7 @@ in pkgs.mkShell {
     pkgs.gnumake
     pkgs.python3 # Useful for any build scripts
     pythonPackages.pyftdi
+    pkgs.busybox
   ];
 
   # Set up environment variables
